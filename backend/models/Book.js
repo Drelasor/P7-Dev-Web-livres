@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+/* const mongoose = require("mongoose");
 
-const ratingSchema = new Schema({
+const ratingSchema = mangoose.Schema({
   userId: { type: String, required: true },
   grade: { type: Number, required: true },
 });
 
-const bookSchema = new Schema({
+const bookSchema = mangoose.Schema({
   userId: { type: String, required: true },
   title: { type: String, required: true },
   author: { type: String, required: true },
@@ -17,3 +17,4 @@ const bookSchema = new Schema({
 });
 
 module.exports = mongoose.model("Book", bookSchema);
+ */
