@@ -1,8 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const Book = require("./models/Book");
 const userRoutes = require ('./routes/user');
+
+const booksRoutes = require('./routes/books');
 
 
 mongoose
@@ -31,41 +32,9 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-/* app.post("/api/auth/signup",(req, res, next) => {
-  const user = new User({
-    ...req.body
-  });
-
-  user.save()
-    .then(() => res.status(201).json({ message: 'Utilisateur enregistré'}))
-    .catch(error => res.status(400).json({ error }));
-});
- */
-
-
-app.get("/api/books/:id", (req, res, next) => {
-  Book.findOne({ _id: req.params.id })
-    .then((book) => res.status(200).json(book))
-    .catch((error) => res.status(404).json({ error }));
-});
-
-app.post("/api/books", (req, res, next) => {
-  delete req.body._id;
-  const book = new Book({
-    ...req.body
-  });
-  book.save()
-    .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
-    .catch(error => res.status(400).json({ error }));
-});
-
-app.use("/api/books", (req, res, next) => {
-  Book.find()
-    .then((book) => res.status(200).json(book))
-    .catch((error) => res.status(400).json({ error }));
-});
-
-/* app.use('/api/books', Book) */
+app.use('/api/books', booksRoutes)
 app.use('/api/auth', userRoutes)
+app.use('/images', express.static(path.join(__dirname,'images')))
+
 
 module.exports = app;
