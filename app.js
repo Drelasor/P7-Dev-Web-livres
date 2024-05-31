@@ -8,7 +8,7 @@ require('dotenv').config();
 
 
 mongoose
-  .connect(
+.connect(
     process.env.MONGO_URI,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 
 app.use('/api/books', booksRoutes)
 app.use('/api/auth', userRoutes)
-app.use('/images', express.static(path.join(__dirname,'images')))
+app.use('/images', express.static(path.join(__dirname,'src','images')))
 
 
 module.exports = app;
