@@ -1,10 +1,10 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-const userRoutes = require ('./src/routes/user');
-const booksRoutes = require('./src/routes/books');
-const path = require("node:path");
-require('dotenv').config();
+const express = require("express")
+const bodyParser = require("body-parser")
+const mongoose = require("mongoose")
+const userRoutes = require ('./src/routes/user')
+const booksRoutes = require('./src/routes/books')
+const path = require("node:path")
+require('dotenv').config()
 
 
 mongoose
@@ -13,7 +13,7 @@ mongoose
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))
-  .catch(() => console.log("Connexion à MongoDB échouée !"));
+  .catch(() => console.log("Connexion à MongoDB échouée !"))
 
 
 const app = express();
@@ -31,11 +31,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.json());
-
+app.use(bodyParser.json())
 app.use('/api/books', booksRoutes)
 app.use('/api/auth', userRoutes)
-app.use('/images', express.static(path.join(__dirname,'src','images')))
+app.use('/images', express.static(path.join(__dirname,'public','images')))
 
 
 module.exports = app;
