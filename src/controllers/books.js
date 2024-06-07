@@ -91,32 +91,25 @@ exports.getOneBook = async (req, res, next) => {
 
 exports.postRating = async (req, res, next) => {
   try {
-    const id = req.params.id
-    const data = req.body;
-//console.log(data);
-    const bulk = Book.collection.initializeOrderedBulkOp();
+    const id = req.params.id;
+    const {rating} = req.body;
+    const userId = req.auth.userId;
+    
+    const book = await Book.findOne({_id: id});
 
-    bulk.find({ _id: id, "ratings.userId": data.userId }).updateOne({
-      $set: { "ratings.$.grade": data.rating },
-    });
+    book.ratings.push({userId, grade: rating});
+    book.averageRating = book.ratings.reduce((acc, rating) => acc + rating.grade, 0) / book.ratings.length;
 
-    bulk.find({ _id: id, "ratings.userId": { $ne: data.userId } }).updateOne({
-      $push: { ratings: { userId: data.userId, grade: data.rating } },
-    });
+    await book.save();
 
-    bulk.execute(function (err, result) {
-      console.log(result);
-      res.status(200).json(result);
-    });
-
+    res.status(200).json(book);
   } catch (error) {
-    res.status(400).json({ error });
+    res.status(400).json({error});
   }
 };
 
 exports.getBestRatings = async (req, res, next) => {
   try {
-    console.log("hey");
     const books = await Book.find().sort({ averageRating: -1 }).limit(3);
 
     res.status(200).json(books);
