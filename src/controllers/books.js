@@ -27,7 +27,7 @@ exports.deleteBook = async (req, res, next) => {
       res.status(401).json({ message: "Not authorized" });
     } else {
       const filename = book.imageUrl.split("/images/")[1];
-      fs.unlink(`images/${filename}`, async () => {
+      fs.unlink(`${__dirname}/../../public/images/${filename}`, async () => {
         await Book.deleteOne({ _id: req.params.id });
         res.status(200).json({ message: "Objet supprimé !" });
       });
@@ -87,7 +87,6 @@ exports.getOneBook = async (req, res, next) => {
   }
 };
 
-//
 
 exports.postRating = async (req, res, next) => {
   try {
