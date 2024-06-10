@@ -57,6 +57,7 @@ exports.modifyBook = async (req, res, next) => {
         { _id: req.params.id },
         { ...bookObject, _id: req.params.id }
       );
+      //await fs.promises.unlink(path.join(__dirname, "..", "..", book.imageUrl));
       res.status(200).json({ message: "Objet modifié!" });
     }
   } catch (error) {
