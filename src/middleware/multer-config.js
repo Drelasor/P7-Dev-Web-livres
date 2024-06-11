@@ -20,7 +20,16 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage }).single('image');
+const fileFilter = (req, file, callback) => {
+    const isValid = !!MIME_TYPES[file.mimetype];
+    if (isValid) {
+        callback(null, true);
+    } else {
+        callback(new Error('Invalid file type. Only images are allowed.'), false);
+    }
+};
+
+const upload = multer({ storage, fileFilter}).single('image');
 
 const compressImage = async (req, res, next) => {
     if (!req.file) {

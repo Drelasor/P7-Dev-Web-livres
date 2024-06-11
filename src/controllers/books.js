@@ -1,5 +1,6 @@
 const Book = require("../models/Book");
 const fs = require("fs");
+const path = require("path")
 
 exports.createBook = async (req, res, next) => {
   try {
@@ -57,10 +58,13 @@ exports.modifyBook = async (req, res, next) => {
         { _id: req.params.id },
         { ...bookObject, _id: req.params.id }
       );
-      //await fs.promises.unlink(path.join(__dirname, "..", "..", book.imageUrl));
+      const filename = book.imageUrl.split("/images/")[1];
+      await fs.promises.unlink(`${__dirname}/../../public/images/${filename}`)
+      
       res.status(200).json({ message: "Objet modifié!" });
     }
   } catch (error) {
+    console.log(error);
     res.status(400).json({ error });
   }
 };
